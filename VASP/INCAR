@@ -1,10 +1,10 @@
 # setup parameters in tag = value syntax to simulate a single-atom enviroment 
 
-SYSTEM = Atom: C     #label
+SYSTEM = Atom: H     #label
 ENCUT  = 500.00 eV   #energy cut-off
 EDIFF  =             #stopping-criterion for ELM
 NELMDL =  
-POMASS = 12.011      #mass (potentially not needed)
-ZVAL   = 4.0         #valence
+POMASS = 1.00784     #mass (potentially not needed)
+ZVAL   = 1.0         #valence
 ISMEAR = 0
 SIGMA  = 0.1         #use smearing method. might need to be 0.1 or 0, but neccessary
