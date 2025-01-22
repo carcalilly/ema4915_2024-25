@@ -1,10 +1,26 @@
-# setup parameters in tag = value syntax to simulate a single-atom enviroment 
+SYSTEM = Atom: 1     ! label by atomic number
+NCORE  = 8           ! number of cores. match slurm script
 
-SYSTEM = Atom: H     #label
-ENCUT  = 500.00 eV   #energy cut-off
-EDIFF  =             #stopping-criterion for ELM
-NELMDL =  
-POMASS = 1.00784     #mass (potentially not needed)
-ZVAL   = 1.0         #valence
-ISMEAR = 0
-SIGMA  = 0.1         #use smearing method. might need to be somewhere 0.1 > x > 0, but neccessary
+! output files. needed for data analysis and processing
+LWAVE  = T           ! write WAVECAR (true)
+LCHARG = T           ! write CHGCAR (true)
+LAECHG = T           ! write AECCAR (true) for charge density data
+
+! both values can be set to 1 if re-testing same enviroment (atom) and want to save calculation time (assuming valid WAVECAR and CHGCAR outputs).
+ISTART = 0           
+ICHARG = 2           ! take superposition of atomic charge densities (default)
+
+ISMEAR = 0           ! use gaussian smearing. highly reccomended for single atom systems
+SIGMA  = 0.01        ! width of smearing (eV). ideally small value
+
+! electronic parameters
+ENCUT  = 500.00      ! set energy cut-off (eV). should be > ENMAX of all elements being tested
+EDIFF  = 1E-06       ! SCF energy convergence (eV). set lower for greater precision, mind computational cost
+ISYM   = 0           ! symmetry is off
+ISPIN  = 2           ! spin polarized calculations
+AMIX = 0.2           
+BMIX = 0.0001        
+! SCF iteration control
+NELMDL = 5           ! delay charge mixing reccomended for atomic calculation. could use testing.
+! NELM   = 40            reduced max. could uncomment for efficiency but could also cause problems. 
+! NELM                   increased max, can potentially help convergence issues
