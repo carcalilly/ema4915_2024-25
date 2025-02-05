@@ -1,3 +1,4 @@
+#import modules and functions 
 import numpy  as np
 import sys
 import matplotlib.pyplot as plt
@@ -9,17 +10,51 @@ from   scipy.ndimage import gaussian_filter1d
 """
  @author Liping Yu
  repurposed for ema4915 2024/2025
- python calc_rrho_edited.py CHG output_x
 """
 
-data = open(sys.argv[1],'r').readlines()
-fout = open(sys.argv[2],'w')
+data = open(sys.argv[1],'r').readlines() #opens first argument in command line and stores it in data
+fout = open(sys.argv[2],'w') #opens second argument in command line and stores it in fout
 
+
+
+"""
+read 3-5 data lines (in data[2-4])
+    represents lattice vectors in the CHG file 
+splits into components (.split()) (for the O example, data[2].split() = ['8.0', '0.0', '0.0'])
+designates as float (float(x))
+
+squares (**2)
+takes the sum of squares (np.sum)
+takes the square root of the sum (**0.5), this finds the norm/magnitude of the vector
+
+multiplies by a (a*) (scaling factor, line 2 of the CHG file)
+
+designates as a1-3
+    will equal the lattice parameters a, b, c
+calculates volume (vol)
+    of the unit cell
+"""
 a = float(data[1].split()[0])
-a1=a*(np.sum([float(x)**2 for x in data[2].split()]))**0.5
+a1=a*(np.sum([float(x)**2 for x in data[2].split()]))**0.5 
 a2=a*(np.sum([float(x)**2 for x in data[3].split()]))**0.5
 a3=a*(np.sum([float(x)**2 for x in data[4].split()]))**0.5
 vol = a1*a2*a3
+
+"""
+ read string from data[6] and split into components (data[6].split())
+    represents line 7 of the CHG file (number of atoms)
+ elements designated as integers (int(x))
+    sum of elements (np.sum)
+    designated as nat (for our purposes, nat = 1 always)
+
+data[nat+9]= data[10] (line 11 of the CHG file, which in O example: data[10].split() → ["80", "80", "80"]
+    writes into nx, ny, nz
+    represents the number of grid points in each direction (x, y, z)
+
+calculate the spacing in each direction (dx, dy, dz) 
+    via division of lattice parameter (a1-3) by number of grid points in each direction (nx-z)
+    volume of a grid cell (dvol) = product of the three spacings
+"""
 
 nat      = np.sum([int(x) for x in data[6].split()])
 nx,ny,nz = [ int(x) for x in data[nat+9].split() ]
@@ -31,21 +66,47 @@ dvol = dx*dy*dz
 """
  read charge data
 """
+"""
+read charge data from data[nat+11] (line 12 in CHG) 
+    calculate number of columns (ncolums) using len and split (split to components, len to count)
+        O example has 10 columns of data in CHG starting from line 12
+grid_lines = number of grid points (nx*ny*nz) divided by number of columns (ncolums)
+    if the division is not an integer, grid_lines is rounded up
+    should output approximate number of lines of data in the CHG file
+"""
 ncolums    = len(data[nat+11].split())
 grid_lines = int(nx*ny*nz/ncolums)
 if float(nx*ny*nz)/ncolums > grid_lines :
    grid_lines += 1
 
+"""
+ calc lines to store atoms, ends up being 0 all the time since nat=1?
+"""
 nat_lines = int(nat/ncolums)
 if float(nat)/ncolums > nat_lines : 
    nat_lines  += 1
 
+"""
+declare data_1D as an empty list
+for loop to read data from data[nat+10] (line 11) to data[nat+10+grid_lines] (to about the end of the file)
+    split and designate as x 
+append adds x to data_1D list as a float 
+reshape data_1D into a numpy 3D array (data_3D) with dimensions nx, ny, nz
+    order='F' is for Fortran-style indexing
+    divide by volume (vol) to normalize
+    this is the charge density in the unit cell
+"""
 data_1D = []
-for l in range(nat+10, nat+10+grid_lines) :
-    for x in data[l].split() :
+for l in range(nat+10, nat+10+grid_lines) : 
+    for x in data[l].split() :              
         data_1D.append(float(x))
 data_3D = np.reshape(np.array(data_1D),(nx,ny,nz),order='F')/vol
   
+"""
+total charge density (sum of all r in data_3d) multiplied by volume (dvol)
+    returns total charge
+minimum value (np.min) 
+"""
 print("# total charge (all r's) and rho_min: ", np.sum(data_3D)*dvol, np.min(data_3D))
 
 
