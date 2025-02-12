@@ -112,34 +112,86 @@ print("# total charge (all r's) and rho_min: ", np.sum(data_3D)*dvol, np.min(dat
 
 """
 calculate radial charge density rrho, and Rs
+    multiply #of grid points in each direction (nx*ny*nz) to get total grid points = N
+    create two arrays of zeros with N elements, Rs_all and rrho_all
 """
-N = nx*ny*nz
-Rs_all   = np.zeros(N)
-rrho_all = np.zeros(N)
+N = nx*ny*nz 
+Rs_all   = np.zeros(N) 
+rrho_all = np.zeros(N) 
+print("Total # of grid points: ", N)
+
+"""
+integer division of array (0 to N) by (ny*nz) to get xinds (x grid indices)
+int. division of array by nz modulo (remainder) ny to get yinds (y grid indices)
+remainder of division by nz to get zinds (z grid indices)
+"""
 
 xinds = np.arange(N)//(ny*nz) 
 yinds = np.arange(N)//nz%ny
 zinds = np.arange(N)%nz
 
+"""
+symmetry shift of grid indices
+    if xinds > nx-xinds, xinds = nx-xinds
+    if yinds > ny-yinds, yinds = ny-yinds
+    if zinds > nz-zinds, zinds = nz-zinds
+square
+"""
+
 xinds = np.where(xinds > nx-xinds, nx-xinds, xinds)**2
 yinds = np.where(yinds > ny-yinds, ny-yinds, yinds)**2
 zinds = np.where(zinds > nz-zinds, nz-zinds, zinds)**2
 
+"""
+calculate real space distance Rs_all
+    transpose of array of xinds, yinds, zinds (stacked vertically) to get Nx3 array
+        rows are grid points, columns are x, y, z indices
+    array of dx, dy, dz (spacing in each direction) squared
+    dot product of the two arrays (element-wise multiplication and sum) and square root
+results in real space distance from the origin to each grid point
+reshape data_3D into 1D array (rrho_all) with N elements
+    charge density at each grid point
+"""
+
 Rs_all   = np.dot( np.transpose([xinds,yinds,zinds]), np.array([dx,dy,dz])**2 )**0.5
 rrho_all = data_3D.reshape(N)
 
+"""
+sort Rs_all in ascending order
+pairs Rs_all and rrho_all values after sorting
+"""
 
-# sort Rs_all and remove remove residual charge (<1e-5) beyond r_cut
 ind      = np.argsort(Rs_all)
 Rs_all   = Rs_all[ind]
 rrho_all = rrho_all[ind]
 
+"""
+removes charge density values that exceed eps
+    reverse rrho_all (rrho_all[::-1]) (now in descending order)
+    cumulative sum of rrho_all (np.cumsum) 
+    multiply by dvol (volume of a grid cell) to get charge
+    true if charge is greater than eps, false if less than eps
+    count number of true values (values above eps) (len)
+    i_cut is cutoff index
+"""
+
 eps      = 1e-5    
 i_cut    = len(Rs_all[np.cumsum(rrho_all[::-1])*dvol > eps ])
+
+"""
+truncate Rs_all and rrho_all to the index specified by i_cut
+    Rs_red and rrho_red are the truncated arrays
+    r_cut is the last value of Rs_red
+"""
 
 Rs_red   = Rs_all[:i_cut]
 rrho_red = rrho_all[:i_cut]
 r_cut    = Rs_red[-1]
+
+"""
+find total charge in all grid points and truncated grid points
+    sum of charge density values (rrho_all and rrho_red) multiplied by dvol (volume of a grid cell)
+"""
 
 Qtot_all = np.sum(rrho_all)*dvol
 Qtot_red = np.sum(rrho_red)*dvol
