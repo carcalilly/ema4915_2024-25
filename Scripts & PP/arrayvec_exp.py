@@ -7,7 +7,7 @@ import numpy  as np
 import sys
 import os
 
-#For the input folder that holds the AECCAR files 
+#For the input folder that holds the AECCAR/CHG files 
 folder_path = sys.argv[1] #folder path specified in command line
 files = os.listdir(folder_path) #list of files in the folder
 
