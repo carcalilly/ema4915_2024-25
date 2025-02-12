@@ -39,6 +39,8 @@ a1=a*(np.sum([float(x)**2 for x in data[2].split()]))**0.5
 a2=a*(np.sum([float(x)**2 for x in data[3].split()]))**0.5
 a3=a*(np.sum([float(x)**2 for x in data[4].split()]))**0.5
 vol = a1*a2*a3
+print(f"Lattice Parameters: a1={a1:.2f}, a2={a2:.2f}, a3={a3:.2f}")
+print(f"Unit Cell Volume: vol={vol:.2f}")
 
 """
  read string from data[6] and split into components (data[6].split())
@@ -62,6 +64,10 @@ dx = a1/nx
 dy = a2/ny
 dz = a3/nz
 dvol = dx*dy*dz
+print(f"Number of atoms: nat={nat}")
+print(f"Grid Points: nx={nx}, ny={ny}, nz={nz}")
+print(f"Spacing: dx={dx}, dy={dy}, dz={dz}")
+print(f"Grid Cell Volume: dvol={dvol}")
 
 """
  read charge data
