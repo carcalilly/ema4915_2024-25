@@ -1,5 +1,0 @@
-H Example
-0                  ! automatic mesh
-Monkhorst Pack
- 1  1  1           ! subdevisions
- 0  0  0

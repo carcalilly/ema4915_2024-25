@@ -1,8 +1,0 @@
-H Cubic                                  ! header
-1                                        ! scaling factor
-     15.00000    .00000    .00000        ! lattice (15 angst, i think)
-       .00000  15.00000    .00000
-       .00000    .00000  15.00000
-   1                                     ! no. atoms (should probably always be 1)
-cart                                     ! coordinate system
- 0    0    0                             ! atom position
