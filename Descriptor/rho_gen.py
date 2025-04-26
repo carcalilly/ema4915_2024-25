@@ -103,7 +103,7 @@ for elemfolder in elemfolder: #for each file in the folder
             input_path = CHG # set CHG as input
             output_path = os.path.join(output_folder, f"{element}.txt") # set output to be named by element
 
-            subprocess.run(["python", "calc_rrho.py", input_path, output_path]) # call calc_rrho.py with subprocess
+            subprocess.run(["python", "calc_rrho_edited.py", input_path, output_path]) # call calc_rrho_edited.py with subprocess
             print(f"Output written to {output_path}")
             
         else: 
