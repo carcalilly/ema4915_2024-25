@@ -1,0 +1,16 @@
+SYSTEM = O atom in a box
+ISMEAR = 0  ! Gaussian smearing
+NCORE = 8   ! Number of cores used
+ICHARG = 2  ! Superposition of atomic charge densities
+SIGMA = 0.2 ! eV smearing 
+
+# Electronic parameters
+ENCUT = 800    ! Energy cutoff in eV
+EDIFF = 1E-06  ! Energy convergence in eV, lower for greater precision
+ISYM = 0       ! Symmetry off
+ISPIN = 2      ! Spin polarized calculations
+
+# Collects charge density data in various formats
+LCHARG = TRUE 
+LAECHG = TRUE
+
