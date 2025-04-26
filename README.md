@@ -1,8 +1,9 @@
 --RADIAL CHARGE DENSITY DESCRIPTOR
 --
 
-        EMA4915 Senior Design
-            2024-2025
+EMA4915 Senior Design
+
+2024-2025
 
 
 Language: Python
