@@ -6,10 +6,10 @@ EMA4915 Senior Design
 2024-2025
 
 
-Language: Python
+__Language:__ Python
 
 
-Required Dependancies / Libraries:
+__Required Dependancies / Libraries:__
   numpy
   matplotlib
   scipy
@@ -22,29 +22,29 @@ Directory Summary
 --
 VASP Input Files
 --
-The input files for VASP that generated CHG files where RCD was calculated from
+*The input files for VASP that generated CHG files where RCD was calculated from*
 
 --
 Descriptor
 --
-Code dedicated to generating a RCD descriptor from VASP CHG files.
+*Code dedicated to generating a RCD descriptor from VASP CHG files.*
 
-  calc_rrho_edited.py - Calculates charge density, plots & writes to file.
+  __calc_rrho_edited.py__ - Calculates charge density, plots & writes to file.
   
-  rho_gen.py - Runs calc_rrho_edited for a set of elements in directory. 
+  __rho_gen.py__ - Runs calc_rrho_edited for a set of elements in directory. 
   
-  descriptor.py - Generates RCD descriptor file.
+  __descriptor.py__ - Generates RCD descriptor file.
   
-  descriptor_win.py - Windows compat. version of descriptor.py.
+  __descriptor_win.py__ - Windows compat. version of descriptor.py.
 
 --
 ML
 --
-Machine Learning Code & Neccessary Input Files
+*Machine Learning Code & Neccessary Input Files*
 
-  SR4.py - KRR and k-fold validation machine learning code. Plots & writes to file.
+  __SR4.py__ - KRR and k-fold validation machine learning code. Plots & writes to file.
   
-  DescriptorV1.txt - Pre-generated descriptor.
+  __DescriptorV1.txt__ - Pre-generated descriptor.
   
   (AtomicNumber.txt
   AtomicRadius.txt
